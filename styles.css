@@ -9,14 +9,20 @@
     --gray-300: #d1d5db;
     --gray-400: #9ca3af;
     --gray-500: #6b7280;
+    --primary-color: #7C9D96; /* 柔和的灰绿色 */
+    --secondary-color: #E9B384; /* 温暖的杏色 */
+    --accent-color: #A1CCD1; /* 淡蓝色 */
+    --background-color: #F4F2DE; /* 米白色背景 */
+    --text-color: #4F4F4F; /* 深灰色文字 */
 }
 
 /* 全域樣式 */
 body {
     font-family: 'Noto Sans TC', sans-serif;
     line-height: 1.7;
-    color: var(--dark);
+    color: var(--text-color);
     overflow-x: hidden;
+    background-color: var(--background-color);
 }
 
 section {
@@ -775,5 +781,16 @@ section {
 .section-header p {
     color: var(--gray-500);
     font-size: 1.2rem;
+}
+
+/* 更新按钮样式 */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #6b8b84;
+    border-color: #6b8b84;
 }
 
