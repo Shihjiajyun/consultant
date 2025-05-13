@@ -629,25 +629,14 @@ section {
 
 /* CTA 區塊樣式優化 */
 .cta-section {
-    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-    padding: 6rem 0;
     position: relative;
-    overflow: hidden;
+    padding: 4rem 0;
+    background-color: #3b3b3b;
 }
 
-.cta-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, rgba(37,99,235,0.9), rgba(29,78,216,0.9));
-}
-
-.cta-section .container {
-    position: relative;
-    z-index: 2;
+.cta-section .shape-1,
+.cta-section .shape-2 {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .cta-section h2 {
@@ -663,7 +652,7 @@ section {
 
 .cta-section .btn-light {
     background: white;
-    color: var(--primary);
+    color: var(--dark);
     border: none;
     padding: 1rem 2rem;
     font-weight: 500;
@@ -672,23 +661,27 @@ section {
 
 .cta-section .btn-light:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background: var(--gray-100);
 }
 
 .cta-section .btn-outline-light {
     border: 2px solid white;
     padding: calc(1rem - 2px) calc(2rem - 2px);
+    color: white;
+    transition: all 0.3s ease;
 }
 
 .cta-section .btn-outline-light:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .cta-decoration .shape-1,
 .cta-decoration .shape-2 {
     position: absolute;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
 }
 
@@ -719,14 +712,6 @@ section {
     
     .cta-section .d-flex {
         flex-direction: column;
-    }
-    
-    .accordion-button {
-        padding: 1rem;
-    }
-    
-    .accordion-body {
-        padding: 1rem;
     }
 }
 
@@ -792,5 +777,9 @@ section {
 .btn-primary:hover {
     background-color: #6b8b84;
     border-color: #6b8b84;
+}
+
+.bg-light-primary {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
 }
 
