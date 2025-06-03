@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章編輯器 - 共好計畫研究室</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入繁體中文字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 圖標 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- 自定義樣式 -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .editor-toolbar {
+            border: 1px solid #ddd;
+            border-bottom: none;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .editor-content {
+            border: 1px solid #ddd;
+            border-top: none;
+            min-height: 400px;
+            padding: 15px;
+            border-radius: 0 0 5px 5px;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        .toolbar-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            margin-right: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        .toolbar-btn:hover {
+            background-color: #e9ecef;
+        }
+        
+        .toolbar-btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .preview-mode {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="./img/logo.png" alt="共好計畫研究室" height="50">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#home">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#about">關於我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#services">服務內容</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#cases">成功案例</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="articles.html">文章專區</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="editor.html">文章編輯</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#contact">聯絡我們</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 編輯器主體 -->
+    <div class="container py-5" style="margin-top: 76px;">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h2 mb-0">文章編輯器</h1>
+                    <div>
+                        <button class="btn btn-outline-secondary me-2" onclick="togglePreview()">
+                            <i class="fas fa-eye"></i> 預覽
+                        </button>
+                        <button class="btn btn-success" onclick="saveArticle()">
+                            <i class="fas fa-save"></i> 儲存文章
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- 左側編輯區 -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title mb-0">文章內容</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- 文章標題 -->
+                        <div class="mb-3">
+                            <label for="articleTitle" class="form-label">文章標題</label>
+                            <input type="text" class="form-control form-control-lg" id="articleTitle" 
+                                   placeholder="請輸入文章標題..." 
+                                   value="如何撰寫成功的政府補助提案書">
+                        </div>
+
+                        <!-- 文章摘要 -->
+                        <div class="mb-3">
+                            <label for="articleSummary" class="form-label">文章摘要</label>
+                            <textarea class="form-control" id="articleSummary" rows="3" 
+                                      placeholder="請輸入文章摘要...">掌握提案書撰寫的關鍵要素，提高申請成功率。本文將分享實戰經驗與成功策略。</textarea>
+                        </div>
+
+                        <!-- 編輯器工具列 -->
+                        <div class="editor-toolbar">
+                            <button class="toolbar-btn" onclick="formatText('bold')" title="粗體">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="formatText('italic')" title="斜體">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="formatText('underline')" title="底線">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                            <span class="mx-2">|</span>
+                            <button class="toolbar-btn" onclick="formatText('insertOrderedList')" title="有序列表">
+                                <i class="fas fa-list-ol"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="formatText('insertUnorderedList')" title="無序列表">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                            <span class="mx-2">|</span>
+                            <button class="toolbar-btn" onclick="insertHeading()" title="標題">
+                                <i class="fas fa-heading"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="insertLink()" title="連結">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="toolbar-btn" onclick="insertImage()" title="圖片">
+                                <i class="fas fa-image"></i>
+                            </button>
+                        </div>
+
+                        <!-- 編輯器內容區 -->
+                        <div class="editor-content" contenteditable="true" id="articleContent">
+                            <h3>引言</h3>
+                            <p>政府補助提案書的撰寫是一門藝術，需要結合策略思考、專業知識和溝通技巧。以下是我們多年來輔導客戶的成功經驗分享：</p>
+                            
+                            <h3>1. 深入了解補助計畫目標</h3>
+                            <p>在開始撰寫提案書之前，必須徹底研究補助計畫的目標、評審標準和申請條件。每個補助計畫都有其特定的政策目標，提案內容必須與這些目標高度契合。</p>
+                            
+                            <h3>2. 清楚定義計畫願景</h3>
+                            <p>一個成功的提案必須有清晰的願景和明確的目標。要能夠簡潔地說明計畫要解決什麼問題、如何解決，以及預期達成的成果。</p>
+                            
+                            <h3>3. 展現創新性與可行性</h3>
+                            <p>提案內容需要在創新性和可行性之間找到平衡。既要展現新穎的想法，也要證明計畫執行的可能性。</p>
+                            
+                            <h3>結論</h3>
+                            <p>記住，一份好的提案書不只是文字的堆砌，而是對計畫深度思考的呈現。如果您需要專業協助，歡迎聯絡我們的團隊。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側設定區 -->
+            <div class="col-lg-4">
+                <!-- 發布設定 -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h6 class="card-title mb-0">發布設定</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="articleStatus" class="form-label">文章狀態</label>
+                            <select class="form-select" id="articleStatus">
+                                <option value="draft">草稿</option>
+                                <option value="published">已發布</option>
+                                <option value="scheduled">定時發布</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="publishDate" class="form-label">發布日期</label>
+                            <input type="datetime-local" class="form-control" id="publishDate">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="articleAuthor" class="form-label">作者</label>
+                            <input type="text" class="form-control" id="articleAuthor" value="王大明">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分類與標籤 -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h6 class="card-title mb-0">分類與標籤</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="articleCategory" class="form-label">文章分類</label>
+                            <select class="form-select" id="articleCategory">
+                                <option value="">選擇分類</option>
+                                <option value="tips" selected>提案技巧</option>
+                                <option value="policy">政策解析</option>
+                                <option value="case">成功案例</option>
+                                <option value="experience">實務經驗</option>
+                                <option value="faq">常見問題</option>
+                                <option value="trend">趨勢分析</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="articleTags" class="form-label">標籤</label>
+                            <input type="text" class="form-control" id="articleTags" 
+                                   placeholder="請輸入標籤，用逗號分隔" 
+                                   value="提案書, 政府補助, 申請技巧">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 特色圖片 -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h6 class="card-title mb-0">特色圖片</h6>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="featured-image-preview mb-3">
+                            <img src="img.jpg" alt="特色圖片預覽" class="img-fluid rounded" style="max-height: 150px;">
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm" onclick="selectFeaturedImage()">
+                            <i class="fas fa-image"></i> 選擇圖片
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm ms-2" onclick="removeFeaturedImage()">
+                            <i class="fas fa-trash"></i> 移除
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SEO 設定 -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h6 class="card-title mb-0">SEO 設定</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="seoTitle" class="form-label">SEO 標題</label>
+                            <input type="text" class="form-control" id="seoTitle" 
+                                   placeholder="SEO 標題..." 
+                                   value="如何撰寫成功的政府補助提案書 | 共好計畫研究室">
+                            <small class="text-muted">建議長度：50-60個字元</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="seoDescription" class="form-label">SEO 描述</label>
+                            <textarea class="form-control" id="seoDescription" rows="3" 
+                                      placeholder="SEO 描述...">專業提案顧問分享政府補助提案書撰寫技巧，提高申請成功率的實戰經驗與策略方法。</textarea>
+                            <small class="text-muted">建議長度：150-160個字元</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 預覽模式 -->
+        <div class="row mt-4" id="previewSection" style="display: none;">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-eye me-2"></i>文章預覽
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="preview-mode" id="previewContent">
+                            <!-- 預覽內容將在這裡顯示 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="./img/logo.png" alt="共好計畫研究室" height="40" class="mb-3">
+                    <p class="text-white-50">您的專業提案顧問</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 text-white-50">&copy; 2024 共好計畫研究室. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 編輯器 JavaScript -->
+    <script>
+        // 格式化文本
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('articleContent').focus();
+        }
+
+        // 插入標題
+        function insertHeading() {
+            const level = prompt('請輸入標題層級 (1-6):', '3');
+            if (level && level >= 1 && level <= 6) {
+                document.execCommand('formatBlock', false, `h${level}`);
+            }
+        }
+
+        // 插入連結
+        function insertLink() {
+            const url = prompt('請輸入連結網址:');
+            if (url) {
+                document.execCommand('createLink', false, url);
+            }
+        }
+
+        // 插入圖片
+        function insertImage() {
+            const url = prompt('請輸入圖片網址:');
+            if (url) {
+                document.execCommand('insertImage', false, url);
+            }
+        }
+
+        // 切換預覽模式
+        function togglePreview() {
+            const previewSection = document.getElementById('previewSection');
+            const previewContent = document.getElementById('previewContent');
+            const articleContent = document.getElementById('articleContent');
+            const articleTitle = document.getElementById('articleTitle');
+            
+            if (previewSection.style.display === 'none') {
+                // 顯示預覽
+                const title = articleTitle.value || '未命名文章';
+                const content = articleContent.innerHTML;
+                
+                previewContent.innerHTML = `
+                    <h1 class="mb-4">${title}</h1>
+                    <div class="mb-3">
+                        <span class="badge bg-primary me-2">提案技巧</span>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i> ${new Date().toLocaleDateString('zh-TW')}
+                            <i class="fas fa-user ms-3 me-1"></i> ${document.getElementById('articleAuthor').value}
+                        </small>
+                    </div>
+                    <hr>
+                    ${content}
+                `;
+                previewSection.style.display = 'block';
+                previewSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // 隱藏預覽
+                previewSection.style.display = 'none';
+            }
+        }
+
+        // 儲存文章
+        function saveArticle() {
+            // 這裡是 DEMO 版本，只顯示確認訊息
+            const title = document.getElementById('articleTitle').value;
+            const content = document.getElementById('articleContent').innerHTML;
+            
+            if (!title.trim()) {
+                alert('請輸入文章標題！');
+                return;
+            }
+            
+            if (!content.trim()) {
+                alert('請輸入文章內容！');
+                return;
+            }
+            
+            // 模擬儲存過程
+            const saveBtn = event.target;
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 儲存中...';
+            saveBtn.disabled = true;
+            
+            setTimeout(() => {
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> 儲存成功';
+                setTimeout(() => {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.disabled = false;
+                }, 1000);
+                
+                alert(`文章「${title}」已儲存成功！\n\n這是 DEMO 版本，實際上文章並未真正儲存。`);
+            }, 1500);
+        }
+
+        // 選擇特色圖片
+        function selectFeaturedImage() {
+            alert('這是 DEMO 版本，圖片選擇功能尚未實作。');
+        }
+
+        // 移除特色圖片
+        function removeFeaturedImage() {
+            if (confirm('確定要移除特色圖片嗎？')) {
+                document.querySelector('.featured-image-preview img').src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7msqHmnInlnZbnianvvIznkIbnoJTlnZfoqInlpIPlmajmiZPlj7A8L3RleHQ+PC9zdmc+';
+            }
+        }
+
+        // 設定當前日期時間
+        document.getElementById('publishDate').value = new Date().toISOString().slice(0, 16);
+
+        // 自動儲存（每30秒）
+        setInterval(() => {
+            const autoSaveIndicator = document.createElement('small');
+            autoSaveIndicator.className = 'text-muted position-fixed';
+            autoSaveIndicator.style.top = '100px';
+            autoSaveIndicator.style.right = '20px';
+            autoSaveIndicator.style.zIndex = '9999';
+            autoSaveIndicator.innerHTML = '<i class="fas fa-check-circle text-success"></i> 自動儲存完成';
+            document.body.appendChild(autoSaveIndicator);
+            
+            setTimeout(() => {
+                autoSaveIndicator.remove();
+            }, 2000);
+        }, 30000);
+    </script>
+</body>
+</html> 
