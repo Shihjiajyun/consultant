@@ -23,7 +23,50 @@ body {
     color: var(--text-color);
     overflow-x: hidden;
     background-color: var(--background-color);
+}
+
+/* 裝飾元素 */
+.circle-decoration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgba(124, 157, 150, 0.1), rgba(233, 179, 132, 0.1));
+    animation: float 6s ease-in-out infinite;
+}
+
+.circle-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    right: 10%;
+    animation-delay: 0s;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 10%;
+    left: 10%;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
     }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
 
 section {
     padding: 6rem 0;
@@ -82,13 +125,21 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, rgba(15,23,42,0.9), rgba(15,23,42,0.6));
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .hero-bg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 0;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
 }
 
 /* 主要優勢區塊 */
@@ -262,35 +313,32 @@ section {
 }
 
 /* 成功案例區塊 */
-.cases .timeline-item {
-    margin-bottom: 4rem;
-    position: relative;
+.cases {
+    background: #f8f9fa;
 }
 
 .case-card {
     background: white;
-    border-radius: 1rem;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     height: 100%;
+    border: none;
 }
 
 .case-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .case-image {
     position: relative;
+    height: 220px;
     overflow: hidden;
-    padding-top: 66.67%; /* 保持 3:2 的圖片比例 */
 }
 
 .case-image img {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -303,25 +351,28 @@ section {
 
 .case-overlay {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 15px;
+    left: 15px;
+    z-index: 10;
 }
 
 .case-content {
-    padding: 1.5rem;
+    padding: 25px;
 }
 
 .case-content h3 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--dark);
+    margin-bottom: 15px;
+    line-height: 1.4;
+    color: #2c3e50;
 }
 
 .case-content p {
-    color: var(--primary);
-    font-weight: 500;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #6c757d;
+    margin-bottom: 15px;
 }
 
 .case-highlights {
@@ -331,17 +382,19 @@ section {
 }
 
 .case-highlights li {
+    padding: 5px 0;
+    padding-left: 20px;
     position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--gray-500);
+    font-size: 0.85rem;
+    color: #495057;
 }
 
 .case-highlights li:before {
-    content: "•";
-    color: var(--primary);
+    content: '✓';
     position: absolute;
-    left: 0.5rem;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
 }
 
 /* 聯絡表單樣式 */
@@ -445,6 +498,42 @@ section {
 
     .service-card {
         padding: 2rem;
+    }
+
+    .section-header .position-absolute {
+        position: static !important;
+        margin-top: 15px;
+    }
+    
+    .section-header .d-flex {
+        flex-direction: column;
+    }
+    
+    .case-content {
+        padding: 20px;
+    }
+    
+    .case-content h3 {
+        font-size: 1rem;
+    }
+    
+    .case-image {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .case-content {
+        padding: 15px;
+    }
+    
+    .case-content h3 {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+    }
+    
+    .case-image {
+        height: 160px;
     }
 }
 
@@ -558,18 +647,6 @@ section {
     color: var(--gray-500);
     font-size: 0.9rem;
     margin: 0;
-}
-
-/* 響應式調整 */
-@media (max-width: 768px) {
-    .testimonial-card {
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-    
-    .testimonial-text {
-        font-size: 1rem;
-    }
 }
 
 /* 確保評價卡片在網格中正確顯示 */
@@ -699,22 +776,6 @@ section {
     left: -100px;
 }
 
-/* 響應式調整 */
-@media (max-width: 768px) {
-    .cta-section {
-        padding: 4rem 0;
-    }
-    
-    .cta-section .btn {
-        width: 100%;
-        margin-bottom: 1rem;
-    }
-    
-    .cta-section .d-flex {
-        flex-direction: column;
-    }
-}
-
 /* 頁尾樣式 */
 .footer {
     position: relative;
@@ -781,5 +842,109 @@ section {
 
 .bg-light-primary {
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+/* 創作足跡區塊樣式 */
+.courses {
+    background-color: var(--background-color);
+    padding: 6rem 0;
+}
+
+.course-image img {
+    transition: transform 0.3s ease;
+}
+
+.course-image:hover img {
+    transform: scale(1.02);
+}
+
+.platform-badge .badge {
+    font-size: 0.9rem;
+}
+
+.course-highlights .highlight-item {
+    margin-bottom: 0.75rem;
+}
+
+.course-stats .stat h4 {
+    color: var(--primary-color);
+}
+
+/* Podcast 區塊樣式 */
+.podcast {
+    background-color: var(--light);
+    padding: 6rem 0;
+}
+
+.podcast-cover img {
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.episode-card {
+    transition: all 0.3s ease;
+}
+
+.episode-card:hover {
+    transform: translateX(5px);
+}
+
+.episode-card .bg-white {
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.episode-card:hover .bg-white {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(124, 157, 150, 0.1);
+}
+
+.podcast-platforms .btn {
+    margin-bottom: 0.5rem;
+}
+
+/* Hero區塊Podcast卡片樣式 */
+.podcast-highlight {
+    margin-top: 2rem;
+}
+
+.podcast-card {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.podcast-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.podcast-title {
+    color: #f8f9fa;
+    font-weight: 500;
+}
+
+.podcast-description {
+    color: #dee2e6;
+    line-height: 1.5;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .podcast-highlight {
+        margin-top: 3rem;
+    }
+    
+    .course-content {
+        margin-top: 2rem;
+        padding-left: 0 !important;
+    }
+    
+    .podcast-episodes {
+        margin-top: 2rem;
+        padding-left: 0 !important;
+    }
 }
 
