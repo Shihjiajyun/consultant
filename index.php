@@ -79,56 +79,56 @@ $categoryColors = [
                 <div class="col-lg-6">
                     <div class="podcast-highlight text-white" data-aos="fade-left" data-aos-delay="300">
                         <?php if ($featuredPodcast): ?>
-                        <div class="podcast-card bg-dark bg-opacity-50 p-4 rounded-3 backdrop-blur">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="podcast-icon me-3">
-                                    <i class="fas fa-podcast fa-2x text-primary"></i>
+                            <div class="podcast-card bg-dark bg-opacity-50 p-4 rounded-3 backdrop-blur">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="podcast-icon me-3">
+                                        <i class="fas fa-podcast fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">共好計畫研究室 Podcast</h5>
+                                        <small class="text-light opacity-75">最新集數</small>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h5 class="mb-1">共好計畫研究室 Podcast</h5>
-                                    <small class="text-light opacity-75">最新集數</small>
+                                <h6 class="podcast-title mb-2">EP.<?php echo $featuredPodcast['episode_number']; ?>
+                                    <?php echo htmlspecialchars($featuredPodcast['title']); ?></h6>
+                                <p class="podcast-description small mb-3">
+                                    <?php echo htmlspecialchars($featuredPodcast['description']); ?></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span
+                                        class="badge bg-primary"><?php echo date('Y/m/d', strtotime($featuredPodcast['release_date'])); ?></span>
+                                    <?php if (!empty($featuredPodcast['podcast_link'])): ?>
+                                        <a href="<?php echo htmlspecialchars($featuredPodcast['podcast_link']); ?>"
+                                            target="_blank" class="btn btn-outline-light btn-sm"
+                                            onclick="incrementPodcastPlay(<?php echo $featuredPodcast['id']; ?>)">
+                                            <i class="fas fa-play me-1"></i> 立即收聽
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="#podcast" class="btn btn-outline-light btn-sm">
+                                            <i class="fas fa-play me-1"></i> 立即收聽
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                            <h6 class="podcast-title mb-2">EP.<?php echo $featuredPodcast['episode_number']; ?>
-                                <?php echo htmlspecialchars($featuredPodcast['title']); ?></h6>
-                            <p class="podcast-description small mb-3">
-                                <?php echo htmlspecialchars($featuredPodcast['description']); ?></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span
-                                    class="badge bg-primary"><?php echo date('Y/m/d', strtotime($featuredPodcast['release_date'])); ?></span>
-                                <?php if (!empty($featuredPodcast['podcast_link'])): ?>
-                                <a href="<?php echo htmlspecialchars($featuredPodcast['podcast_link']); ?>"
-                                    target="_blank" class="btn btn-outline-light btn-sm"
-                                    onclick="incrementPodcastPlay(<?php echo $featuredPodcast['id']; ?>)">
-                                    <i class="fas fa-play me-1"></i> 立即收聽
-                                </a>
-                                <?php else: ?>
-                                <a href="#podcast" class="btn btn-outline-light btn-sm">
-                                    <i class="fas fa-play me-1"></i> 立即收聽
-                                </a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
                         <?php else: ?>
-                        <div class="podcast-card bg-dark bg-opacity-50 p-4 rounded-3 backdrop-blur">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="podcast-icon me-3">
-                                    <i class="fas fa-podcast fa-2x text-primary"></i>
+                            <div class="podcast-card bg-dark bg-opacity-50 p-4 rounded-3 backdrop-blur">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="podcast-icon me-3">
+                                        <i class="fas fa-podcast fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">共好計畫研究室 Podcast</h5>
+                                        <small class="text-light opacity-75">敬請期待</small>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h5 class="mb-1">共好計畫研究室 Podcast</h5>
-                                    <small class="text-light opacity-75">敬請期待</small>
+                                <h6 class="podcast-title mb-2">即將推出精彩內容</h6>
+                                <p class="podcast-description small mb-3">我們正在準備豐富的 Podcast 內容，敬請期待！</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-secondary">即將推出</span>
+                                    <a href="#contact" class="btn btn-outline-light btn-sm">
+                                        <i class="fas fa-bell me-1"></i> 訂閱通知
+                                    </a>
                                 </div>
                             </div>
-                            <h6 class="podcast-title mb-2">即將推出精彩內容</h6>
-                            <p class="podcast-description small mb-3">我們正在準備豐富的 Podcast 內容，敬請期待！</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="badge bg-secondary">即將推出</span>
-                                <a href="#contact" class="btn btn-outline-light btn-sm">
-                                    <i class="fas fa-bell me-1"></i> 訂閱通知
-                                </a>
-                            </div>
-                        </div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -421,7 +421,7 @@ $categoryColors = [
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="course-image">
-                        <img src="./img/hahow-course.jpg" alt="Hahow線上課程" class="img-fluid rounded-3 shadow-lg">
+                        <img src="./img/con.jpg" alt="Hahow線上課程" class="img-fluid rounded-3 shadow-lg">
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
@@ -544,44 +544,44 @@ $categoryColors = [
                         <h3 class="h4 fw-bold mb-4">最新集數</h3>
 
                         <?php if (!empty($latestPodcasts)): ?>
-                        <?php foreach (array_slice($latestPodcasts, 0, 3) as $index => $podcast): ?>
-                        <div class="episode-card mb-3">
-                            <div class="d-flex align-items-center p-3 bg-white rounded-3 shadow-sm">
-                                <div class="episode-number me-3">
-                                    <span
-                                        class="badge <?php echo $index === 0 ? 'bg-primary' : 'bg-secondary'; ?> fs-6">
-                                        EP.<?php echo $podcast['episode_number']; ?>
-                                    </span>
+                            <?php foreach (array_slice($latestPodcasts, 0, 3) as $index => $podcast): ?>
+                                <div class="episode-card mb-3">
+                                    <div class="d-flex align-items-center p-3 bg-white rounded-3 shadow-sm">
+                                        <div class="episode-number me-3">
+                                            <span
+                                                class="badge <?php echo $index === 0 ? 'bg-primary' : 'bg-secondary'; ?> fs-6">
+                                                EP.<?php echo $podcast['episode_number']; ?>
+                                            </span>
+                                        </div>
+                                        <div class="episode-info flex-grow-1">
+                                            <h6 class="mb-1"><?php echo htmlspecialchars($podcast['title']); ?></h6>
+                                            <small class="text-muted">
+                                                <?php echo date('Y/m/d', strtotime($podcast['release_date'])); ?> •
+                                                <?php echo htmlspecialchars($podcast['duration']); ?>
+                                            </small>
+                                        </div>
+                                        <div class="episode-action">
+                                            <?php if (!empty($podcast['podcast_link'])): ?>
+                                                <a href="<?php echo htmlspecialchars($podcast['podcast_link']); ?>" target="_blank"
+                                                    class="btn btn-outline-primary btn-sm"
+                                                    onclick="incrementPodcastPlay(<?php echo $podcast['id']; ?>)">
+                                                    <i class="fas fa-play"></i>
+                                                </a>
+                                            <?php else: ?>
+                                                <button class="btn btn-outline-secondary btn-sm" disabled>
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="episode-info flex-grow-1">
-                                    <h6 class="mb-1"><?php echo htmlspecialchars($podcast['title']); ?></h6>
-                                    <small class="text-muted">
-                                        <?php echo date('Y/m/d', strtotime($podcast['release_date'])); ?> •
-                                        <?php echo htmlspecialchars($podcast['duration']); ?>
-                                    </small>
-                                </div>
-                                <div class="episode-action">
-                                    <?php if (!empty($podcast['podcast_link'])): ?>
-                                    <a href="<?php echo htmlspecialchars($podcast['podcast_link']); ?>" target="_blank"
-                                        class="btn btn-outline-primary btn-sm"
-                                        onclick="incrementPodcastPlay(<?php echo $podcast['id']; ?>)">
-                                        <i class="fas fa-play"></i>
-                                    </a>
-                                    <?php else: ?>
-                                    <button class="btn btn-outline-secondary btn-sm" disabled>
-                                        <i class="fas fa-play"></i>
-                                    </button>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
                         <?php else: ?>
-                        <div class="text-center py-4">
-                            <i class="fas fa-podcast fa-3x text-muted mb-3"></i>
-                            <h6 class="text-muted">即將推出精彩內容</h6>
-                            <p class="text-muted small">我們正在準備豐富的 Podcast 內容，敬請期待！</p>
-                        </div>
+                            <div class="text-center py-4">
+                                <i class="fas fa-podcast fa-3x text-muted mb-3"></i>
+                                <h6 class="text-muted">即將推出精彩內容</h6>
+                                <p class="text-muted small">我們正在準備豐富的 Podcast 內容，敬請期待！</p>
+                            </div>
                         <?php endif; ?>
 
                         <div class="podcast-platforms">
@@ -627,31 +627,31 @@ $categoryColors = [
                     $publishDate = date('Y年n月j日', strtotime($article['created_at']));
                     $featuredImage = !empty($article['featured_image']) ? 'uploads/' . $article['featured_image'] : './img/article-default.jpg';
                 ?>
-                <!-- 文章卡片 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
-                    <div class="card border-0 shadow-sm h-100">
-                        <img src="<?php echo htmlspecialchars($featuredImage); ?>" class="card-img-top"
-                            alt="<?php echo htmlspecialchars($article['title']); ?>"
-                            style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <span
-                                class="badge <?php echo $categoryColor; ?> mb-2 align-self-start"><?php echo htmlspecialchars($article['category']); ?></span>
-                            <h5 class="card-title"><?php echo htmlspecialchars($article['title']); ?></h5>
-                            <p class="card-text text-muted"><?php echo htmlspecialchars($article['excerpt']); ?></p>
-                            <div class="mt-auto">
-                                <small class="text-muted">
-                                    <i class="fas fa-calendar me-1"></i> <?php echo $publishDate; ?>
-                                    <i class="fas fa-user ms-3 me-1"></i>
-                                    <?php echo htmlspecialchars($article['author']); ?>
-                                </small>
-                                <div class="mt-3">
-                                    <a href="article.php?id=<?php echo $article['id']; ?>"
-                                        class="btn btn-outline-primary">閱讀更多</a>
+                    <!-- 文章卡片 -->
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
+                        <div class="card border-0 shadow-sm h-100">
+                            <img src="<?php echo htmlspecialchars($featuredImage); ?>" class="card-img-top"
+                                alt="<?php echo htmlspecialchars($article['title']); ?>"
+                                style="height: 200px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <span
+                                    class="badge <?php echo $categoryColor; ?> mb-2 align-self-start"><?php echo htmlspecialchars($article['category']); ?></span>
+                                <h5 class="card-title"><?php echo htmlspecialchars($article['title']); ?></h5>
+                                <p class="card-text text-muted"><?php echo htmlspecialchars($article['excerpt']); ?></p>
+                                <div class="mt-auto">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i> <?php echo $publishDate; ?>
+                                        <i class="fas fa-user ms-3 me-1"></i>
+                                        <?php echo htmlspecialchars($article['author']); ?>
+                                    </small>
+                                    <div class="mt-3">
+                                        <a href="article.php?id=<?php echo $article['id']; ?>"
+                                            class="btn btn-outline-primary">閱讀更多</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <?php
                     $delay += 100;
                 endforeach;
@@ -659,25 +659,25 @@ $categoryColors = [
                 // 如果沒有文章，顯示預設內容
                 if (empty($latestArticles)):
                 ?>
-                <div class="col-12 text-center">
-                    <div class="py-5">
-                        <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
-                        <h5 class="text-muted">尚無文章發布</h5>
-                        <p class="text-muted">管理員可以透過後台新增文章</p>
+                    <div class="col-12 text-center">
+                        <div class="py-5">
+                            <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">尚無文章發布</h5>
+                            <p class="text-muted">管理員可以透過後台新增文章</p>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
             </div>
 
             <!-- 查看更多按鈕 -->
             <?php if (!empty($latestArticles)): ?>
-            <div class="row mt-5">
-                <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="400">
-                    <a href="articles.php" class="btn btn-primary btn-lg">
-                        查看所有文章 <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
+                <div class="row mt-5">
+                    <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="400">
+                        <a href="articles.php" class="btn btn-primary btn-lg">
+                            查看所有文章 <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
         </div>
     </section>
@@ -803,37 +803,37 @@ $categoryColors = [
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    AOS.init();
+        AOS.init();
 
-    // 視差滾動效果
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const heroBackground = document.getElementById('heroBackground');
-        if (heroBackground) {
-            const speed = scrolled * 0.3;
-            heroBackground.style.transform = `translateY(${speed}px)`;
+        // 視差滾動效果
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroBackground = document.getElementById('heroBackground');
+            if (heroBackground) {
+                const speed = scrolled * 0.3;
+                heroBackground.style.transform = `translateY(${speed}px)`;
+            }
+        });
+
+        // Podcast 播放統計
+        function incrementPodcastPlay(podcastId) {
+            fetch('php/podcast_handler.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=increment_plays&id=${podcastId}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('播放統計已更新');
+                    }
+                })
+                .catch(error => {
+                    console.error('統計更新失敗:', error);
+                });
         }
-    });
-
-    // Podcast 播放統計
-    function incrementPodcastPlay(podcastId) {
-        fetch('php/podcast_handler.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `action=increment_plays&id=${podcastId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('播放統計已更新');
-                }
-            })
-            .catch(error => {
-                console.error('統計更新失敗:', error);
-            });
-    }
     </script>
 </body>
 
