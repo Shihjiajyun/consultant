@@ -1,71 +1,52 @@
+<?php
+// 在輸出任何HTML之前處理PHP
+require_once 'php/config.php';
+require_once 'php/article_handler.php';
+require_once 'php/podcast_handler.php';
+
+$articleHandler = new ArticleHandler();
+$podcastHandler = new PodcastHandler();
+$latestArticles = $articleHandler->getAllArticles('published', 3);
+$latestPodcasts = $podcastHandler->getAllPodcasts('published', 5);
+$featuredPodcast = !empty($latestPodcasts) ? $latestPodcasts[0] : null;
+
+$categoryColors = [
+    '提案技巧' => 'bg-primary',
+    '政策解析' => 'bg-success',
+    '成功案例' => 'bg-info',
+    '常見問題' => 'bg-warning',
+    '實務經驗' => 'bg-secondary'
+];
+?>
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>共好計畫研究室 - 您的專業提案顧問</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AOS 動畫效果 -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- 引入繁體中文字體 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome 圖標 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- 自定義樣式 -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/all.css">
 </head>
+
 <body>
     <div class="circle-decoration">
         <div class="circle circle-1"></div>
         <div class="circle circle-2"></div>
     </div>
-    <!-- 導航欄 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="./img/logo.png" alt="共好計畫研究室" height="50">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home">首頁</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">關於我們</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">服務內容</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#cases">成功案例</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#courses">創作足跡</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#podcast">Podcast</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="articles.html">文章專區</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="editor.html">文章編輯</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">聯絡我們</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary" href="#contact">免費評估</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+    <?php include 'navbar.php'; ?>
 
     <!-- Hero 區域優化 -->
     <section id="home" class="hero min-vh-100 d-flex align-items-center">
@@ -74,7 +55,7 @@
             <div class="overlay"></div>
             <img src="./img/hero.jpg" alt="專業團隊背景" class="w-100 h-100 object-fit-cover" id="heroBackground">
         </div>
-        
+
         <!-- 內容圖層 -->
         <div class="container position-relative">
             <div class="row">
@@ -97,6 +78,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="podcast-highlight text-white" data-aos="fade-left" data-aos-delay="300">
+                        <?php if ($featuredPodcast): ?>
                         <div class="podcast-card bg-dark bg-opacity-50 p-4 rounded-3 backdrop-blur">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="podcast-icon me-3">
@@ -107,15 +89,47 @@
                                     <small class="text-light opacity-75">最新集數</small>
                                 </div>
                             </div>
-                            <h6 class="podcast-title mb-2">EP.15 政府補助申請的成功秘訣</h6>
-                            <p class="podcast-description small mb-3">分享如何提高政府補助申請成功率，從計畫書撰寫到面試技巧的完整攻略。</p>
+                            <h6 class="podcast-title mb-2">EP.<?php echo $featuredPodcast['episode_number']; ?>
+                                <?php echo htmlspecialchars($featuredPodcast['title']); ?></h6>
+                            <p class="podcast-description small mb-3">
+                                <?php echo htmlspecialchars($featuredPodcast['description']); ?></p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="badge bg-primary">2024/01/15</span>
+                                <span
+                                    class="badge bg-primary"><?php echo date('Y/m/d', strtotime($featuredPodcast['release_date'])); ?></span>
+                                <?php if (!empty($featuredPodcast['podcast_link'])): ?>
+                                <a href="<?php echo htmlspecialchars($featuredPodcast['podcast_link']); ?>"
+                                    target="_blank" class="btn btn-outline-light btn-sm"
+                                    onclick="incrementPodcastPlay(<?php echo $featuredPodcast['id']; ?>)">
+                                    <i class="fas fa-play me-1"></i> 立即收聽
+                                </a>
+                                <?php else: ?>
                                 <a href="#podcast" class="btn btn-outline-light btn-sm">
                                     <i class="fas fa-play me-1"></i> 立即收聽
                                 </a>
+                                <?php endif; ?>
                             </div>
                         </div>
+                        <?php else: ?>
+                        <div class="podcast-card bg-dark bg-opacity-50 p-4 rounded-3 backdrop-blur">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="podcast-icon me-3">
+                                    <i class="fas fa-podcast fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">共好計畫研究室 Podcast</h5>
+                                    <small class="text-light opacity-75">敬請期待</small>
+                                </div>
+                            </div>
+                            <h6 class="podcast-title mb-2">即將推出精彩內容</h6>
+                            <p class="podcast-description small mb-3">我們正在準備豐富的 Podcast 內容，敬請期待！</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-secondary">即將推出</span>
+                                <a href="#contact" class="btn btn-outline-light btn-sm">
+                                    <i class="fas fa-bell me-1"></i> 訂閱通知
+                                </a>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -152,103 +166,103 @@
         </div>
     </section>
 
-       <!-- 服務內容區優化 -->
-       <section id="services" class="services py-8 bg-light">
+    <!-- 服務內容區優化 -->
+    <section id="services" class="services py-8 bg-light">
         <div class="container">
             <div class="section-header text-center mb-5">
                 <h2 class="display-6 fw-bold mb-3">服務內容</h2>
                 <p class="lead text-muted">我們提供全方位的專業輔導方案</p>
             </div>
-            
+
             <div class="row g-4">
                 <!-- 提案顧問輔導卡片 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-card">
-                            <div class="service-icon mb-4">
-                                <i class="fas fa-file-signature fa-2x text-primary"></i>
-                            </div>
-                            <h3 class="h4 mb-4">提案顧問輔導</h3>
-                            <div class="price-tag mb-4">
-                                <span class="h3 fw-bold">40,000</span>
-                                <span class="text-muted">元 / 案</span>
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    資源盤點與分析
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    提案策略規劃
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    計畫書撰寫指導
-                                </li>
-                            </ul>
-                            <a href="#contact" class="btn btn-primary w-100">立即諮詢</a>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-file-signature fa-2x text-primary"></i>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-card">
-                            <div class="service-icon mb-4">
-                                <i class="fas fa-file-signature fa-2x text-primary"></i>
-                            </div>
-                            <h3 class="h4 mb-4">提案顧問輔導</h3>
-                            <div class="price-tag mb-4">
-                                <span class="h3 fw-bold">40,000</span>
-                                <span class="text-muted">元 / 案</span>
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    資源盤點與分析
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    提案策略規劃
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    計畫書撰寫指導
-                                </li>
-                            </ul>
-                            <a href="#contact" class="btn btn-primary w-100">立即諮詢</a>
+                        <h3 class="h4 mb-4">提案顧問輔導</h3>
+                        <div class="price-tag mb-4">
+                            <span class="h3 fw-bold">40,000</span>
+                            <span class="text-muted">元 / 案</span>
                         </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                資源盤點與分析
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                提案策略規劃
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                計畫書撰寫指導
+                            </li>
+                        </ul>
+                        <a href="#contact" class="btn btn-primary w-100">立即諮詢</a>
                     </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-card">
-                            <div class="service-icon mb-4">
-                                <i class="fas fa-file-signature fa-2x text-primary"></i>
-                            </div>
-                            <h3 class="h4 mb-4">提案顧問輔導</h3>
-                            <div class="price-tag mb-4">
-                                <span class="h3 fw-bold">40,000</span>
-                                <span class="text-muted">元 / 案</span>
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    資源盤點與分析
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    提案策略規劃
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    計畫書撰寫指導
-                                </li>
-                            </ul>
-                            <a href="#contact" class="btn btn-primary w-100">立即諮詢</a>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-file-signature fa-2x text-primary"></i>
                         </div>
+                        <h3 class="h4 mb-4">提案顧問輔導</h3>
+                        <div class="price-tag mb-4">
+                            <span class="h3 fw-bold">40,000</span>
+                            <span class="text-muted">元 / 案</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                資源盤點與分析
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                提案策略規劃
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                計畫書撰寫指導
+                            </li>
+                        </ul>
+                        <a href="#contact" class="btn btn-primary w-100">立即諮詢</a>
                     </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-file-signature fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-4">提案顧問輔導</h3>
+                        <div class="price-tag mb-4">
+                            <span class="h3 fw-bold">40,000</span>
+                            <span class="text-muted">元 / 案</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                資源盤點與分析
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                提案策略規劃
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-primary me-2"></i>
+                                計畫書撰寫指導
+                            </li>
+                        </ul>
+                        <a href="#contact" class="btn btn-primary w-100">立即諮詢</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- 主要優勢 -->
-    <section class="features">
+    <section id="features" class="features">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <h2>我們的優勢</h2>
@@ -285,13 +299,13 @@
             <div class="section-header text-center mb-5" data-aos="fade-up">
                 <div class="d-flex justify-content-center align-items-center mb-3 position-relative">
                     <h2 class="display-6 fw-bold mb-0">成功案例</h2>
-                    <a href="success-cases.html" class="btn btn-outline-primary position-absolute" style="right: 0;">
+                    <a href="success-cases.php" class="btn btn-outline-primary position-absolute" style="right: 0;">
                         查看更多 <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                 </div>
                 <p class="lead text-muted">我們的專業實績</p>
             </div>
-            
+
             <div class="row g-4">
                 <!-- 講座資歷案例 -->
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
@@ -317,7 +331,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 輔導單位案例 -->
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="case-card">
@@ -342,7 +356,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 輔導計畫案例 1 -->
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="case-card">
@@ -367,7 +381,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 輔導計畫案例 2 -->
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
                     <div class="case-card">
@@ -403,7 +417,7 @@
                 <h2 class="display-6 fw-bold mb-3">創作足跡</h2>
                 <p class="lead text-muted">分享專業知識，傳承實戰經驗</p>
             </div>
-            
+
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="course-image">
@@ -472,7 +486,7 @@
                             </div>
                         </div>
                         <div class="course-actions">
-                            <a href="#" class="btn btn-primary btn-lg me-3">
+                            <a target="_blank" href="https://hahow.in/cr/co-hands" class="btn btn-primary btn-lg me-3">
                                 <i class="fas fa-external-link-alt me-2"></i>前往 Hahow
                             </a>
                             <a href="#contact" class="btn btn-outline-primary btn-lg">
@@ -492,7 +506,7 @@
                 <h2 class="display-6 fw-bold mb-3">共好計畫研究室 Podcast</h2>
                 <p class="lead text-muted">每週分享提案技巧與政府補助最新資訊</p>
             </div>
-            
+
             <div class="row">
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="podcast-intro">
@@ -503,13 +517,15 @@
                             <div class="row text-center">
                                 <div class="col-4">
                                     <div class="stat">
-                                        <h4 class="fw-bold text-primary mb-1">15</h4>
+                                        <h4 class="fw-bold text-primary mb-1"><?php echo count($latestPodcasts); ?></h4>
                                         <small class="text-muted">總集數</small>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="stat">
-                                        <h4 class="fw-bold text-primary mb-1">5K+</h4>
+                                        <h4 class="fw-bold text-primary mb-1">
+                                            <?php echo number_format(array_sum(array_column($latestPodcasts, 'play_count'))); ?>+
+                                        </h4>
                                         <small class="text-muted">總收聽</small>
                                     </div>
                                 </div>
@@ -526,72 +542,66 @@
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                     <div class="podcast-episodes ps-lg-4">
                         <h3 class="h4 fw-bold mb-4">最新集數</h3>
-                        
-                        <!-- Episode 1 -->
+
+                        <?php if (!empty($latestPodcasts)): ?>
+                        <?php foreach (array_slice($latestPodcasts, 0, 3) as $index => $podcast): ?>
                         <div class="episode-card mb-3">
                             <div class="d-flex align-items-center p-3 bg-white rounded-3 shadow-sm">
                                 <div class="episode-number me-3">
-                                    <span class="badge bg-primary fs-6">EP.15</span>
+                                    <span
+                                        class="badge <?php echo $index === 0 ? 'bg-primary' : 'bg-secondary'; ?> fs-6">
+                                        EP.<?php echo $podcast['episode_number']; ?>
+                                    </span>
                                 </div>
                                 <div class="episode-info flex-grow-1">
-                                    <h6 class="mb-1">政府補助申請的成功秘訣</h6>
-                                    <small class="text-muted">2024/01/15 • 25分鐘</small>
+                                    <h6 class="mb-1"><?php echo htmlspecialchars($podcast['title']); ?></h6>
+                                    <small class="text-muted">
+                                        <?php echo date('Y/m/d', strtotime($podcast['release_date'])); ?> •
+                                        <?php echo htmlspecialchars($podcast['duration']); ?>
+                                    </small>
                                 </div>
                                 <div class="episode-action">
-                                    <button class="btn btn-outline-primary btn-sm">
+                                    <?php if (!empty($podcast['podcast_link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($podcast['podcast_link']); ?>" target="_blank"
+                                        class="btn btn-outline-primary btn-sm"
+                                        onclick="incrementPodcastPlay(<?php echo $podcast['id']; ?>)">
+                                        <i class="fas fa-play"></i>
+                                    </a>
+                                    <?php else: ?>
+                                    <button class="btn btn-outline-secondary btn-sm" disabled>
                                         <i class="fas fa-play"></i>
                                     </button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Episode 2 -->
-                        <div class="episode-card mb-3">
-                            <div class="d-flex align-items-center p-3 bg-white rounded-3 shadow-sm">
-                                <div class="episode-number me-3">
-                                    <span class="badge bg-secondary fs-6">EP.14</span>
-                                </div>
-                                <div class="episode-info flex-grow-1">
-                                    <h6 class="mb-1">地方創生計畫實戰分享</h6>
-                                    <small class="text-muted">2024/01/08 • 32分鐘</small>
-                                </div>
-                                <div class="episode-action">
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-play"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                        <div class="text-center py-4">
+                            <i class="fas fa-podcast fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">即將推出精彩內容</h6>
+                            <p class="text-muted small">我們正在準備豐富的 Podcast 內容，敬請期待！</p>
                         </div>
-                        
-                        <!-- Episode 3 -->
-                        <div class="episode-card mb-4">
-                            <div class="d-flex align-items-center p-3 bg-white rounded-3 shadow-sm">
-                                <div class="episode-number me-3">
-                                    <span class="badge bg-secondary fs-6">EP.13</span>
-                                </div>
-                                <div class="episode-info flex-grow-1">
-                                    <h6 class="mb-1">SBIR申請完整攻略</h6>
-                                    <small class="text-muted">2024/01/01 • 28分鐘</small>
-                                </div>
-                                <div class="episode-action">
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-play"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
+                        <?php endif; ?>
+
                         <div class="podcast-platforms">
                             <h6 class="mb-3">收聽平台</h6>
                             <div class="d-flex gap-2 flex-wrap">
-                                <a href="#" class="btn btn-outline-dark btn-sm">
-                                    <i class="fab fa-spotify me-1"></i>Spotify
-                                </a>
-                                <a href="#" class="btn btn-outline-dark btn-sm">
+                                <a href="https://podcasts.apple.com/tw/podcast/%E7%A2%A9%E5%93%A5%E9%96%92%E8%81%8A-s2-ep1-%E7%A2%A9%E5%93%A5%E7%9A%84%E9%A1%A7%E5%95%8F%E7%AD%86%E8%A8%98%E7%AC%AC%E4%BA%8C%E5%AD%A3%E9%96%8B%E5%BC%B5/id1675756298?i=1000688582724"
+                                    target="_blank" class="btn btn-outline-dark btn-sm">
                                     <i class="fab fa-apple me-1"></i>Apple Podcasts
                                 </a>
-                                <a href="#" class="btn btn-outline-dark btn-sm">
-                                    <i class="fab fa-google me-1"></i>Google Podcasts
+                                <a href="https://open.spotify.com/episode/1CX04j42Kunsj24krXtaYU" target="_blank"
+                                    class="btn btn-outline-dark btn-sm">
+                                    <i class="fab fa-spotify me-1"></i>Spotify
+                                </a>
+                                <a href="https://podcast.kkbox.com/tw/episode/4sh2ILqsoBfxWpZvCW" target="_blank"
+                                    class="btn btn-outline-dark btn-sm">
+                                    <i class="fas fa-music me-1"></i>KKBOX
+                                </a>
+                                <a href="https://pay.soundon.fm/podcasts/7bfcebcc-c411-465d-a1e5-8b1174d44c6a"
+                                    target="_blank" class="btn btn-outline-dark btn-sm">
+                                    <i class="fas fa-headphones me-1"></i>SoundOn
                                 </a>
                             </div>
                         </div>
@@ -601,95 +611,79 @@
         </div>
     </section>
 
-
-
-
     <!-- 文章專區區塊 -->
-    <section class="articles-preview py-8 bg-light">
+    <section id="articles" class="articles-preview py-8 bg-light">
         <div class="container">
             <div class="section-header text-center mb-5" data-aos="fade-up">
                 <h2 class="display-6 fw-bold mb-3">最新文章</h2>
                 <p class="lead text-muted">分享提案經驗與政府補助相關知識</p>
             </div>
-            
+
             <div class="row g-4">
-                <!-- 文章卡片 1 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <?php
+                $delay = 100;
+                foreach ($latestArticles as $article):
+                    $categoryColor = $categoryColors[$article['category']] ?? 'bg-secondary';
+                    $publishDate = date('Y年n月j日', strtotime($article['created_at']));
+                    $featuredImage = !empty($article['featured_image']) ? 'uploads/' . $article['featured_image'] : './img/article-default.jpg';
+                ?>
+                <!-- 文章卡片 -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
                     <div class="card border-0 shadow-sm h-100">
-                        <img src="./img/article1.jpg" class="card-img-top" alt="文章圖片" style="height: 200px; object-fit: cover;">
+                        <img src="<?php echo htmlspecialchars($featuredImage); ?>" class="card-img-top"
+                            alt="<?php echo htmlspecialchars($article['title']); ?>"
+                            style="height: 200px; object-fit: cover;">
                         <div class="card-body d-flex flex-column">
-                            <span class="badge bg-primary mb-2 align-self-start">提案技巧</span>
-                            <h5 class="card-title">如何撰寫成功的政府補助提案書</h5>
-                            <p class="card-text text-muted">掌握提案書撰寫的關鍵要素，提高申請成功率。本文將分享實戰經驗...</p>
+                            <span
+                                class="badge <?php echo $categoryColor; ?> mb-2 align-self-start"><?php echo htmlspecialchars($article['category']); ?></span>
+                            <h5 class="card-title"><?php echo htmlspecialchars($article['title']); ?></h5>
+                            <p class="card-text text-muted"><?php echo htmlspecialchars($article['excerpt']); ?></p>
                             <div class="mt-auto">
                                 <small class="text-muted">
-                                    <i class="fas fa-calendar me-1"></i> 2024年1月15日
-                                    <i class="fas fa-user ms-3 me-1"></i> 王大明
+                                    <i class="fas fa-calendar me-1"></i> <?php echo $publishDate; ?>
+                                    <i class="fas fa-user ms-3 me-1"></i>
+                                    <?php echo htmlspecialchars($article['author']); ?>
                                 </small>
                                 <div class="mt-3">
-                                    <a href="article1.html" class="btn btn-outline-primary">閱讀更多</a>
+                                    <a href="article.php?id=<?php echo $article['id']; ?>"
+                                        class="btn btn-outline-primary">閱讀更多</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <?php
+                    $delay += 100;
+                endforeach;
 
-                <!-- 文章卡片 2 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card border-0 shadow-sm h-100">
-                        <img src="./img/article2.jpg" class="card-img-top" alt="文章圖片" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <span class="badge bg-success mb-2 align-self-start">政策解析</span>
-                            <h5 class="card-title">2024年文化部補助計畫重點解析</h5>
-                            <p class="card-text text-muted">深入分析今年度文化部各項補助計畫的申請條件與評審重點...</p>
-                            <div class="mt-auto">
-                                <small class="text-muted">
-                                    <i class="fas fa-calendar me-1"></i> 2024年1月10日
-                                    <i class="fas fa-user ms-3 me-1"></i> 李小華
-                                </small>
-                                <div class="mt-3">
-                                    <a href="article2.html" class="btn btn-outline-primary">閱讀更多</a>
-                                </div>
-                            </div>
-                        </div>
+                // 如果沒有文章，顯示預設內容
+                if (empty($latestArticles)):
+                ?>
+                <div class="col-12 text-center">
+                    <div class="py-5">
+                        <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+                        <h5 class="text-muted">尚無文章發布</h5>
+                        <p class="text-muted">管理員可以透過後台新增文章</p>
                     </div>
                 </div>
-
-                <!-- 文章卡片 3 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card border-0 shadow-sm h-100">
-                        <img src="./img/article3.jpg" class="card-img-top" alt="文章圖片" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <span class="badge bg-info mb-2 align-self-start">成功案例</span>
-                            <h5 class="card-title">地方創生計畫成功案例分享</h5>
-                            <p class="card-text text-muted">透過實際案例，了解地方創生計畫從構想到實現的完整過程...</p>
-                            <div class="mt-auto">
-                                <small class="text-muted">
-                                    <i class="fas fa-calendar me-1"></i> 2024年1月5日
-                                    <i class="fas fa-user ms-3 me-1"></i> 張顧問
-                                </small>
-                                <div class="mt-3">
-                                    <a href="article3.html" class="btn btn-outline-primary">閱讀更多</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
-            
+
             <!-- 查看更多按鈕 -->
+            <?php if (!empty($latestArticles)): ?>
             <div class="row mt-5">
                 <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="400">
-                    <a href="articles.html" class="btn btn-primary btn-lg">
+                    <a href="articles.php" class="btn btn-primary btn-lg">
                         查看所有文章 <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </section>
 
     <!-- 常見問題 -->
-    <section class="faq py-8">
+    <section id="faq" class="faq py-8">
         <div class="container">
             <div class="section-header text-center mb-5">
                 <h2 class="display-6 fw-bold mb-3" data-aos="fade-up">常見問題</h2>
@@ -700,7 +694,8 @@
                     <div class="accordion" id="faqAccordion" data-aos="fade-up" data-aos-delay="200">
                         <div class="accordion-item border-0 mb-3 shadow-sm">
                             <h3 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq1">
                                     提案輔導的流程是怎樣的？
                                 </button>
                             </h3>
@@ -723,7 +718,6 @@
             </div>
         </div>
     </section>
-
 
     <!-- 聯絡我們 -->
     <section id="contact" class="contact">
@@ -781,7 +775,8 @@
                         <a href="#contact" class="btn btn-light btn-lg px-5">
                             立即諮詢 <i class="fas fa-arrow-right ms-2"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-light btn-lg px-5">
+                        <a href="https://line.me/ti/p/gtswill" target="_blank"
+                            class="btn btn-outline-light btn-lg px-5">
                             加入LINE好友 <i class="fab fa-line ms-2"></i>
                         </a>
                     </div>
@@ -796,73 +791,50 @@
     </section>
 
     <!-- 頁尾 -->
-    <footer class="footer bg-dark text-white py-8">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-4">
-                    <div class="footer-brand mb-4">
-                        <img src="./img/logo.png" alt="共好計畫研究室" height="40">
-                        <p class="mt-3 text-white-50">您的專業提案顧問</p>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <h5 class="text-white mb-4">網站導航</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#home" class="text-white-50 text-decoration-none">首頁</a></li>
-                        <li class="mb-2"><a href="#about" class="text-white-50 text-decoration-none">關於我們</a></li>
-                        <li class="mb-2"><a href="#services" class="text-white-50 text-decoration-none">服務內容</a></li>
-                        <li class="mb-2"><a href="#cases" class="text-white-50 text-decoration-none">成功案例</a></li>
-                        <li class="mb-2"><a href="#courses" class="text-white-50 text-decoration-none">創作足跡</a></li>
-                        <li class="mb-2"><a href="#podcast" class="text-white-50 text-decoration-none">Podcast</a></li>
-                        <li class="mb-2"><a href="articles.html" class="text-white-50 text-decoration-none">文章專區</a></li>
-                        <li class="mb-2"><a href="#contact" class="text-white-50 text-decoration-none">聯絡我們</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h5 class="text-white mb-4">聯絡資訊</h5>
-                    <ul class="list-unstyled text-white-50">
-                        <li class="mb-3"><i class="fas fa-map-marker-alt me-2"></i> 台北市信義區松仁路123號8樓</li>
-                        <li class="mb-3"><i class="fas fa-phone me-2"></i> 02-2345-6789</li>
-                        <li class="mb-3"><i class="fas fa-envelope me-2"></i> contact@gonghaostudio.com</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="mt-5 mb-4 border-white-50">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 text-white-50">&copy; 2024 共好計畫研究室. All Rights Reserved.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-white-50 text-decoration-none me-3">隱私權政策</a>
-                    <a href="#" class="text-white-50 text-decoration-none">服務條款</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php include 'footer.php'; ?>
 
     <!-- 悬浮联系按钮 -->
     <div class="floating-contact">
         <a href="#contact" class="contact-btn"><i class="fas fa-comments"></i></a>
-        <a href="#" class="line-btn"><i class="fab fa-line"></i></a>
+        <a href="https://line.me/ti/p/gtswill" target="_blank" class="line-btn"><i class="fab fa-line"></i></a>
     </div>
 
     <!-- 添加JS文件 -->
-    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
-        
-        // 視差滾動效果
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const heroBackground = document.getElementById('heroBackground');
-            if (heroBackground) {
-                const speed = scrolled * 0.3;
-                heroBackground.style.transform = `translateY(${speed}px)`;
-            }
-        });
-    </script> 
+    AOS.init();
+
+    // 視差滾動效果
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const heroBackground = document.getElementById('heroBackground');
+        if (heroBackground) {
+            const speed = scrolled * 0.3;
+            heroBackground.style.transform = `translateY(${speed}px)`;
+        }
+    });
+
+    // Podcast 播放統計
+    function incrementPodcastPlay(podcastId) {
+        fetch('php/podcast_handler.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=increment_plays&id=${podcastId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('播放統計已更新');
+                }
+            })
+            .catch(error => {
+                console.error('統計更新失敗:', error);
+            });
+    }
+    </script>
 </body>
 
 </html>

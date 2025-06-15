@@ -1,0 +1,393 @@
+/* 導航欄樣式 */
+.navbar {
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    padding: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand img {
+    height: 50px;
+    transition: all 0.3s ease;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+/* 頁尾樣式 */
+.footer {
+    position: relative;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 50%, #1a1a1a 100%);
+    overflow: hidden;
+}
+
+/* Footer 背景裝飾 */
+.footer-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    pointer-events: none;
+}
+
+.footer-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Footer 區塊樣式 */
+.footer-section {
+    height: 100%;
+}
+
+/* 品牌區域 */
+.brand-header {
+    margin-bottom: 1.5rem;
+}
+
+.brand-icon-wrapper {
+    position: relative;
+}
+
+.brand-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4a4a4a 0%, #333333 100%);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.brand-icon::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    border-radius: 17px;
+    z-index: -1;
+}
+
+.brand-title {
+    color: white;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.brand-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+.brand-description {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* 區塊標題 */
+.section-title {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.section-title i {
+    color: #888888;
+    font-size: 1rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: #666666;
+}
+
+/* 導航連結 */
+.footer-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-nav-list li {
+    margin-bottom: 0.75rem;
+}
+
+.nav-link-item {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    position: relative;
+}
+
+.nav-link-item i {
+    width: 20px;
+    margin-right: 0.75rem;
+    color: rgba(13, 110, 253, 0.7);
+    transition: all 0.3s ease;
+}
+
+.nav-link-item:hover {
+    color: white;
+    transform: translateX(8px);
+    background: rgba(13, 110, 253, 0.1);
+    padding-left: 1rem;
+}
+
+.nav-link-item:hover i {
+    color: var(--bs-primary);
+}
+
+/* 聯絡資訊 */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(13, 110, 253, 0.3);
+    transform: translateY(-2px);
+}
+
+.contact-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--bs-primary) 0%, #0056b3 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.contact-icon-wrapper i {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.contact-details {
+    flex: 1;
+}
+
+.contact-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contact-value {
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.contact-value:hover {
+    color: var(--bs-primary);
+}
+
+/* 快速聯絡 */
+.quick-contact-desc {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.quick-contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-contact,
+.btn-line {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-contact {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, #0056b3 100%);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-contact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+}
+
+.btn-line {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-line:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* 分隔線 */
+.footer-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    margin: 2rem 0 1.5rem 0;
+}
+
+/* 版權區域 */
+.footer-bottom {
+    padding-top: 1rem;
+}
+
+.copyright-text {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.footer-policies {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+.policy-link {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.policy-link:hover {
+    color: var(--bs-primary);
+}
+
+.policy-link i {
+    margin-right: 0.5rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .footer-section {
+        margin-bottom: 2.5rem;
+    }
+    
+    .brand-header {
+        text-align: center;
+    }
+    
+    .section-title {
+        text-align: center;
+    }
+    
+    .quick-contact-buttons {
+        align-items: center;
+    }
+    
+    .footer-policies {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .copyright-text {
+        text-align: center;
+    }
+    
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .contact-icon-wrapper {
+        margin: 0 auto 1rem auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer {
+        padding: 3rem 0 2rem 0;
+    }
+    
+    .brand-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .brand-title {
+        font-size: 1.2rem;
+    }
+    
+    .quick-contact-buttons {
+        gap: 0.5rem;
+    }
+    
+    .btn-contact,
+    .btn-line {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
