@@ -421,7 +421,7 @@ $categoryColors = [
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="course-image">
-                        <img src="./img/con.jpg" alt="Hahow線上課程" class="img-fluid rounded-3 shadow-lg">
+                        <img src="./img/con_hahow.jpg" alt="Hahow線上課程" class="img-fluid rounded-3 shadow-lg">
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
