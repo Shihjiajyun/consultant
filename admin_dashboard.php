@@ -3,16 +3,20 @@ require_once 'php/config.php';
 require_once 'php/auth.php';
 require_once 'php/article_handler.php';
 require_once 'php/podcast_handler.php';
+require_once 'php/author_handler.php';
 
 $auth = new Auth();
 $auth->requireAdminLogin();
 
 $articleHandler = new ArticleHandler();
 $podcastHandler = new PodcastHandler();
+$authorHandler = new AuthorHandler();
 $articles = $articleHandler->getAllArticles('all');
 $podcasts = $podcastHandler->getAllPodcasts('all');
+$authors = $authorHandler->getAllAuthors(true);
 $stats = $articleHandler->getArticleStats();
 $podcastStats = $podcastHandler->getPodcastStats();
+$authorStats = $authorHandler->getAuthorStats();
 $currentAdmin = $auth->getCurrentAdmin();
 ?>
 <!DOCTYPE html>
@@ -142,7 +146,7 @@ $currentAdmin = $auth->getCurrentAdmin();
                         <div class="card stats-card">
                             <i class="fas fa-users stats-icon"></i>
                             <div class="card-body">
-                                <span class="stats-number">2</span>
+                                <span class="stats-number"><?php echo $authorStats['total'] ?? 0; ?></span>
                                 <div class="stats-label">作者數量</div>
                             </div>
                         </div>
@@ -411,50 +415,58 @@ $currentAdmin = $auth->getCurrentAdmin();
                             </div>
                         </div>
 
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="card border-0 shadow-sm">
-                                        <div class="card-body text-center">
-                                            <img src="./img/people.jpg" class="rounded-circle mb-3" width="80"
-                                                height="80" alt="張顧問">
-                                            <h5>張顧問</h5>
-                                            <p class="text-muted">資深顧問</p>
-                                            <p class="small">專精政府補助提案輔導，協助眾多企業成功獲得補助資源。</p>
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <a href="author_editor.php?id=1" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-edit"></i> 編輯
-                                                </a>
-                                                <button class="btn btn-sm btn-outline-info"
-                                                    onclick="viewAuthor(1, '張顧問')">
-                                                    <i class="fas fa-eye"></i> 查看
-                                                </button>
+                        <?php if (empty($authors)): ?>
+                            <div class="card-body text-center py-5">
+                                <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                                <h5 class="text-muted">尚無作者資料</h5>
+                                <p class="text-muted">開始建立您的第一位作者資料！</p>
+                                <a href="author_editor.php" class="btn btn-primary">
+                                    <i class="fas fa-plus me-1"></i>新增作者
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <div class="card-body">
+                                <div class="row">
+                                    <?php foreach ($authors as $author): ?>
+                                        <div class="col-md-6 col-xl-4 mb-4">
+                                            <div class="card border-0 shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <img src="<?php echo !empty($author['avatar']) ? htmlspecialchars($author['avatar']) : './img/people.jpg'; ?>"
+                                                        class="rounded-circle mb-3" width="80" height="80"
+                                                        alt="<?php echo htmlspecialchars($author['name']); ?>">
+                                                    <h5><?php echo htmlspecialchars($author['name']); ?></h5>
+                                                    <p class="text-muted">
+                                                        <?php echo htmlspecialchars($author['title'] ?? '作者'); ?></p>
+                                                    <p class="small">
+                                                        <?php echo htmlspecialchars(mb_substr($author['bio'] ?? '', 0, 60)); ?><?php echo mb_strlen($author['bio'] ?? '') > 60 ? '...' : ''; ?>
+                                                    </p>
+                                                    <?php if (!empty($author['specialties'])): ?>
+                                                        <div class="mb-2">
+                                                            <small
+                                                                class="badge bg-info"><?php echo htmlspecialchars($author['specialties']); ?></small>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <div class="d-flex justify-content-center gap-2">
+                                                        <a href="author_editor.php?id=<?php echo $author['id']; ?>"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-edit"></i> 編輯
+                                                        </a>
+                                                        <button class="btn btn-sm btn-outline-info"
+                                                            onclick="viewAuthor(<?php echo $author['id']; ?>, '<?php echo addslashes($author['name']); ?>')">
+                                                            <i class="fas fa-eye"></i> 查看
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger"
+                                                            onclick="deleteAuthor(<?php echo $author['id']; ?>, '<?php echo addslashes($author['name']); ?>')">
+                                                            <i class="fas fa-trash"></i> 刪除
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card border-0 shadow-sm">
-                                        <div class="card-body text-center">
-                                            <img src="./img/people.jpg" class="rounded-circle mb-3" width="80"
-                                                height="80" alt="李專員">
-                                            <h5>李專員</h5>
-                                            <p class="text-muted">政策分析專員</p>
-                                            <p class="small">專業的政策分析專家，深度了解各類政府補助計畫。</p>
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <a href="author_editor.php?id=2" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-edit"></i> 編輯
-                                                </a>
-                                                <button class="btn btn-sm btn-outline-info"
-                                                    onclick="viewAuthor(2, '李專員')">
-                                                    <i class="fas fa-eye"></i> 查看
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -820,6 +832,69 @@ $currentAdmin = $auth->getCurrentAdmin();
                                         icon: 'success',
                                         title: '刪除成功',
                                         text: '文章已成功刪除',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '刪除失敗',
+                                        text: data.message || '刪除操作失敗，請稍後再試'
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '系統錯誤',
+                                    text: '網路連線錯誤，請檢查網路狀態後再試'
+                                });
+                            });
+                    }
+                });
+            }
+
+            // 刪除作者功能
+            function deleteAuthor(id, name) {
+                Swal.fire({
+                    title: '確定要刪除作者嗎？',
+                    text: `作者：${name}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '確定刪除',
+                    cancelButtonText: '取消',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 顯示刪除進度
+                        Swal.fire({
+                            title: '正在刪除...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        var formData = new FormData();
+                        formData.append('action', 'delete');
+                        formData.append('id', id);
+
+                        fetch('php/author_handler.php', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '刪除成功',
+                                        text: '作者已成功刪除',
                                         timer: 1500,
                                         showConfirmButton: false
                                     }).then(() => {
