@@ -476,10 +476,10 @@ $categoryColors = [
                         <div class="course-stats mb-4">
                             <div class="row text-center">
                                 <div class="col-4">
-                                    <div class="stat">
+                                    <!-- <div class="stat">
                                         <h4 class="fw-bold text-primary mb-1">1200+</h4>
                                         <small class="text-muted">學員人數</small>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-4">
                                     <div class="stat">
