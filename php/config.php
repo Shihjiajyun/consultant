@@ -1,6 +1,6 @@
 <?php
 // 資料庫配置
-define('DB_HOST', '43.207.210.147');
+define('DB_HOST', '13.114.174.139');
 define('DB_USER', 'myuser');
 define('DB_PASS', '123456789');
 define('DB_NAME', 'consultant_db');
