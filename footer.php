@@ -91,8 +91,9 @@
                         <a href="#contact" class="btn btn-primary btn-contact">
                             <i class="fas fa-comments me-2"></i>立即諮詢
                         </a>
-                        <a href="https://line.me/ti/p/gtswill" target="_blank" class="btn btn-outline-light btn-line">
-                            <i class="fab fa-line me-2"></i>加入 LINE
+                        <a href="https://line.me/ti/p/gtswill" target="_blank" class="line-qr-link">
+                            <img src="./img/line.jpg" alt="LINE QR Code" class="line-qr-code"
+                                style="width: 80%; height: 80%;">
                         </a>
                     </div>
                 </div>
